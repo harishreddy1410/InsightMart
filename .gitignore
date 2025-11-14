@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+env/
+
+# OS
+.DS_Store
+
+# Streamlit
+.streamlit/
+
+# Huggingface tokens
+*.env
+.env
+
+# Keep DB included!
+# Do NOT ignore insightmart.db
