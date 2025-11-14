@@ -2,4 +2,3 @@ streamlit
 huggingface_hub
 matplotlib
 pandas
-streamlit
