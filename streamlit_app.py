@@ -1,6 +1,7 @@
 import streamlit as st
 import sqlite3
 from llm_interface import generate_sql_from_prompt
+from db_utils import is_safe_sql
 
 DB_PATH = "insightmart.db"
 
@@ -13,14 +14,20 @@ st.write("Ask any question about your retail data, and I will generate SQL + run
 # Load SQLite DB
 # -----------------------------
 def run_sql_query(query):
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        df = conn.execute(query).fetchall()
-        columns = [col[0] for col in conn.execute(query).description]
-        conn.close()
-        return df, columns, None
-    except Exception as e:
-        return None, None, str(e)
+    if not is_safe_sql(query):
+        st.error("❌ Unsafe SQL detected. Only SELECT queries are allowed.")
+         # Return empty rows, empty columns, and an error message
+        return [], [], "Unsafe SQL detected. Only SELECT queries are allowed."
+    
+    else:
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            df = conn.execute(query).fetchall()
+            columns = [col[0] for col in conn.execute(query).description]
+            conn.close()
+            return df, columns, None
+        except Exception as e:
+            return None, None, str(e)
 
 
 # -----------------------------
