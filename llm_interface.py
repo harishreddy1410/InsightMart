@@ -141,6 +141,9 @@ Follow these rules EXACTLY:
 8) If the user requests results by city and some city values are NULL, use COALESCE(c.City,'Unknown') and group by that expression.
 9) Prefer explicit GROUP BY and ORDER BY when aggregating; include sensible LIMIT where appropriate.
 10) If a join might lose rows because a FK is missing, use LEFT JOIN and COALESCE to preserve totals unless the user explicitly requests otherwise.
+11) Always use COALESCE(column, 0) — never prefix with table aliases.
+12) Never join Customers table unless the user specifically asks for customer-level information.
+13) Daily/weekly/monthly sales queries must use ONLY the Sales table and group by DATE(SaleDate).
 
 Schema:
 {_SCHEMA}
